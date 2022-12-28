@@ -20,10 +20,25 @@ using Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities;
 using Il2CppAssets.Scripts.Simulation.Towers;
 using Il2CppAssets.Scripts.Simulation.Towers.Weapons;
 using Il2Cpp;
+using Tempest;
+using MelonLoader.Utils;
 [assembly:MelonGame("Ninja Kiwi","BloonsTD6")]
-[assembly:MelonInfo(typeof(Tempest.ModMain),"SC2Expansion.Tempest","1.0.0","Silentstorm")]
+[assembly:MelonInfo(typeof(Tempest.ModMain),ModHelperData.Name,ModHelperData.Version,"Silentstorm")]
 namespace Tempest{
-    public class ModMain:MelonMod{}
+    public class ModMain:MelonMod{
+        public static string LoaderPath=MelonEnvironment.ModsDirectory+"/SC2ExpansionLoader.dll";
+        public override async void OnEarlyInitializeMelon(){
+            if(!File.Exists(LoaderPath)){
+                var httpClient=new HttpClient();
+                using(var stream=await httpClient.GetStreamAsync("https://github.com/Onixiya/SC2Expansion/releases/download/latest/SC2ExpansionLoader.dll")){
+                    using(var fileStream=new FileStream(LoaderPath, FileMode.CreateNew)){
+                        await stream.CopyToAsync(fileStream);
+                    }
+                }
+                MelonAssembly.LoadMelonAssembly(LoaderPath);
+            }
+        }
+    }
     public class Tempest:SC2Tower{
         public override string Name=>"Tempest";
         public override UpgradeModel[]Upgrades(){
