@@ -20,10 +20,9 @@ using Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities;
 using Il2CppAssets.Scripts.Simulation.Towers;
 using Il2CppAssets.Scripts.Simulation.Towers.Weapons;
 using Il2Cpp;
-using Tempest;
 using MelonLoader.Utils;
 [assembly:MelonGame("Ninja Kiwi","BloonsTD6")]
-[assembly:MelonInfo(typeof(Tempest.ModMain),ModHelperData.Name,ModHelperData.Version,"Silentstorm")]
+[assembly:MelonInfo(typeof(Tempest.ModMain),Tempest.ModHelperData.Name,Tempest.ModHelperData.Version,"Silentstorm")]
 namespace Tempest{
     public class ModMain:MelonMod{
         public static string LoaderPath=MelonEnvironment.ModsDirectory+"/SC2ExpansionLoader.dll";
