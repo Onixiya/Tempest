@@ -21,20 +21,21 @@ using Il2CppAssets.Scripts.Simulation.Towers;
 using Il2CppAssets.Scripts.Simulation.Towers.Weapons;
 using Il2Cpp;
 using MelonLoader.Utils;
+using UnityEngine;
 [assembly:MelonGame("Ninja Kiwi","BloonsTD6")]
 [assembly:MelonInfo(typeof(Tempest.ModMain),Tempest.ModHelperData.Name,Tempest.ModHelperData.Version,"Silentstorm")]
+[assembly:MelonOptionalDependencies("SC2ExpansionLoader")]
 namespace Tempest{
     public class ModMain:MelonMod{
         public static string LoaderPath=MelonEnvironment.ModsDirectory+"/SC2ExpansionLoader.dll";
-        public override async void OnEarlyInitializeMelon(){
+        public override void OnEarlyInitializeMelon(){
             if(!File.Exists(LoaderPath)){
                 var httpClient=new HttpClient();
-                using(var stream=await httpClient.GetStreamAsync("https://github.com/Onixiya/SC2Expansion/releases/download/latest/SC2ExpansionLoader.dll")){
-                    using(var fileStream=new FileStream(LoaderPath, FileMode.CreateNew)){
-                        await stream.CopyToAsync(fileStream);
-                    }
-                }
-                MelonAssembly.LoadMelonAssembly(LoaderPath);
+                var stream=httpClient.GetStreamAsync("https://github.com/Onixiya/SC2Expansion/releases/latest/download/SC2ExpansionLoader.dll");
+                var fileStream=new FileStream(LoaderPath,FileMode.CreateNew);
+                stream.Result.CopyToAsync(fileStream);
+                Log("Restarting game so MelonLoader correctly loads all mods");
+                Application.Quit();
             }
         }
     }

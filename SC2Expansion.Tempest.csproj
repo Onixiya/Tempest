@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SC2ExpansionLoader">
-      <HintPath>/home/silentstorm/.steam/steam/steamapps/common/BloonsTD6/Mods/SC2ExpansionLoader.dll</HintPath>
+      <HintPath>/home/silentstorm/btd6dev/SC2Expansion/Loader/bin/Debug/net6.0/SC2ExpansionLoader.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>/home/silentstorm/.steam/steam/steamapps/common/BloonsTD6/MelonLoader/Il2CppAssemblies/Assembly-CSharp.dll</HintPath>
