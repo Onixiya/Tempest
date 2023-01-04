@@ -49,6 +49,8 @@ namespace Tempest{
                 new("Antimatter Infusion",18575,0,new(){guidRef="Ui[Tempest-AntimatterInfusionIcon]"},0,4,0,"","Antimatter Infusion")
             };
         }
+        public override int MaxSelectQuote=>7;
+        public override int MaxUpgradeQuote=>5;
         public override Dictionary<string,string>SoundNames=>new(){{"Tempest","Tempest-"},{"Upgraded","Tempest-"}};
         public override ShopTowerDetailsModel ShopDetails(){
             ShopTowerDetailsModel details=Game.instance.model.towerSet[0].Clone().Cast<ShopTowerDetailsModel>();
