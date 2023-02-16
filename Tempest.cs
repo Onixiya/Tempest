@@ -41,7 +41,9 @@ namespace Tempest{
     }
     public class Tempest:SC2Tower{
         public override string Name=>"Tempest";
-        public override UpgradeModel[]Upgrades(){
+        public override string Description=>"Protoss aerial seige craft, very high damage and range with slow fire rate";
+        public override Faction TowerFaction=>Faction.Protoss;
+        public override UpgradeModel[]GenerateUpgradeModels(){
             return new UpgradeModel[]{
                 new("Disruption Blast",980,0,new(){guidRef="Ui[Tempest-DisruptionBlastIcon]"},0,1,0,"","Disruption Blast"),
                 new("Tectonic Destablizers",1875,0,new(){guidRef="Ui[Tempest-TectonicDestablizersIcon]"},0,2,0,"","Tectonic Destablizers"),
@@ -51,6 +53,7 @@ namespace Tempest{
         }
         public override int MaxSelectQuote=>7;
         public override int MaxUpgradeQuote=>5;
+        public override int MaxTier=>4;
         public override Dictionary<string,string>SoundNames=>new(){{"Tempest","Tempest-"},{"Upgraded","Tempest-"}};
         public override ShopTowerDetailsModel ShopDetails(){
             ShopTowerDetailsModel details=Game.instance.model.towerSet[0].Clone().Cast<ShopTowerDetailsModel>();
@@ -61,13 +64,13 @@ namespace Tempest{
             details.pathTwoMax=0;
             details.pathThreeMax=0;
             details.popsRequired=0;
-            LocalizationManager.Instance.textTable.Add("Disruption Blast Description","Attacks slow targets for a short time");
-            LocalizationManager.Instance.textTable.Add("Tectonic Destablizers Description","Deals triple damage against Moab class Bloons");
-            LocalizationManager.Instance.textTable.Add("Disintegration Description","Ability: Fires a massive amount of energy at a target dealing huge damage to it over a short period");
-            LocalizationManager.Instance.textTable.Add("Antimatter Infusion Description","Doubles damage dealt, damage all bloon types and slows down B.A.D's");
+            LocManager.textTable.Add("Disruption Blast Description","Attacks slow targets for a short time");
+            LocManager.textTable.Add("Tectonic Destablizers Description","Deals triple damage against Moab class Bloons");
+            LocManager.textTable.Add("Disintegration Description","Ability: Fires a massive amount of energy at a target dealing huge damage to it over a short period");
+            LocManager.textTable.Add("Antimatter Infusion Description","Doubles damage dealt, damage all bloon types and slows down B.A.D's");
             return details;
         }
-        public override TowerModel[]TowerModels(){
+        public override TowerModel[]GenerateTowerModels(){
             return new TowerModel[]{
                 Base(),
                 DisruptionBlast(),
@@ -77,7 +80,7 @@ namespace Tempest{
             };
         }
         public TowerModel Base(){
-            TowerModel tempest=Game.instance.model.GetTowerFromId("DartMonkey").Clone().Cast<TowerModel>();
+            TowerModel tempest=gameModel.GetTowerFromId("DartMonkey").Clone().Cast<TowerModel>();
             tempest.name=Name;
             tempest.baseId=tempest.name;
             tempest.towerSet=TowerSet.Magic;
@@ -148,7 +151,7 @@ namespace Tempest{
             tempest.upgrades=new UpgradePathModel[]{new("Antimatter Infusion",Name+"-400")};
             AbilityModel disintegration=BlankAbilityModel.Clone().Cast<AbilityModel>();
             AttackModel disintegrationAttack=tempest.behaviors.First(a=>a.GetIl2CppType().Name=="AttackModel").Clone().Cast<AttackModel>();
-            disintegrationAttack.weapons[0].projectile=Game.instance.model.GetTowerFromId("DartlingGunner-200").behaviors.
+            disintegrationAttack.weapons[0].projectile=gameModel.GetTowerFromId("DartlingGunner-200").behaviors.
                 First(a=>a.GetIl2CppType().Name=="AttackModel").Cast<AttackModel>().weapons[0].projectile.Clone().Cast<ProjectileModel>();
             AddBehaviorToBloonModel AddDOT=disintegrationAttack.weapons[0].projectile.behaviors.First(a=>a.GetIl2CppType().Name=="AddBehaviorToBloonModel").
                 Cast<AddBehaviorToBloonModel>();
@@ -199,7 +202,7 @@ namespace Tempest{
                 behaviors.First(a=>a.GetIl2CppType().Name=="DamageOverTimeModel").Cast<DamageOverTimeModel>().immuneBloonProperties=0;
             return tempest;
         }
-        public override void Create(){
+        public override void Create(Tower tower){
             PlaySound("Tempest-Birth");
         }
         public override void Upgrade(int tier,Tower tower){
