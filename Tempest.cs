@@ -6,8 +6,7 @@ using Il2CppAssets.Scripts.Models.TowerSets;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors;
-using Il2CppNinjaKiwi.Common;
-using Il2CppAssets.Scripts.Models.Map;
+using Il2CppInterop.Runtime;
 using Il2CppAssets.Scripts.Models.Towers.Weapons;
 using Il2CppAssets.Scripts.Models;
 using MelonLoader;
@@ -51,10 +50,37 @@ namespace Tempest{
                 new("Antimatter Infusion",18575,0,new(){guidRef="Ui[Tempest-AntimatterInfusionIcon]"},0,4,0,"","Antimatter Infusion")
             };
         }
-        public override int MaxSelectQuote=>7;
-        public override int MaxUpgradeQuote=>5;
+		public override Dictionary<string,Il2CppSystem.Type>Components=>new(){{"Tempest-Prefab",Il2CppType.Of<TempestCom>()}};
+		[RegisterTypeInIl2Cpp]
+        public class TempestCom:MonoBehaviour{
+            public TempestCom(IntPtr ptr):base(ptr){}
+			public GameObject activeObj=null;
+			public GameObject tempest=null;
+			public GameObject upgradeTempest=null;
+			int selectSound=0;
+			int upgradeSound=0;
+			void Start(){
+				tempest=transform.GetChild(0).gameObject;
+				upgradeTempest=transform.GetChild(1).gameObject;
+				upgradeTempest.SetActive(false);
+				tempest.transform.localPosition=new(0,0,0);
+				upgradeTempest.transform.localPosition=new(0,0,0);
+				activeObj=tempest;
+			}
+			public void PlaySelectSound(){
+				if(selectSound>5){
+					selectSound=0;
+				}
+				selectSound+=1;
+				PlaySound("Tempest-Select"+selectSound);
+			}
+			public void PlayUpgradeSound(){
+				upgradeSound+=1;
+				selectSound=0;
+				PlaySound("Tempest-Upgrade"+upgradeSound);
+			}
+        }
         public override int MaxTier=>4;
-        public override Dictionary<string,string>SoundNames=>new(){{"Tempest","Tempest-"},{"Upgraded","Tempest-"}};
         public override ShopTowerDetailsModel ShopDetails(){
             ShopTowerDetailsModel details=Game.instance.model.towerSet[0].Clone().Cast<ShopTowerDetailsModel>();
             details.towerId=Name;
@@ -89,13 +115,13 @@ namespace Tempest{
             tempest.tiers=new[]{0,0,0};
             tempest.upgrades=new UpgradePathModel[]{new("Disruption Blast",Name+"-100")};
             tempest.range=90;
-            tempest.display=new(){guidRef="Tempest-Tempest-Prefab"};
+            tempest.display=new(){guidRef="Tempest-Prefab"};
             tempest.icon=new(){guidRef="Ui[Tempest-Icon]"};
             tempest.instaIcon=new(){guidRef="Ui[Tempest-Icon]"};
             tempest.portrait=new(){guidRef="Ui[Tempest-Portrait]"};
             DisplayModel display=tempest.behaviors.First(a=>a.GetIl2CppType().Name=="DisplayModel").Cast<DisplayModel>();
             display.positionOffset=new(0,0,190);
-            display.display=new(){guidRef="Tempest-Tempest-Prefab"};
+            display.display=new(){guidRef="Tempest-Prefab"};
             AttackModel attackModel=tempest.behaviors.First(a=>a.GetIl2CppType().Name=="AttackModel").Cast<AttackModel>();
             attackModel.range=tempest.range;
             attackModel.behaviors.First(a=>a.GetIl2CppType().Name=="RotateToTargetModel").Cast<RotateToTargetModel>().onlyRotateDuringThrow=false;
@@ -189,7 +215,6 @@ namespace Tempest{
             tempest.appliedUpgrades=new(new[]{"Disruption Blast","Tectonic Destablizers","Disintegration","Antimatter Infusion"});
             tempest.upgrades=new(0);
             tempest.portrait=new(){guidRef="Ui[Tempest-UpgradedPortrait]"};
-            tempest.display=new(){guidRef="Tempest-Upgraded-Prefab"};
             ProjectileModel proj=tempest.behaviors.First(a=>a.GetIl2CppType().Name=="AttackModel").Cast<AttackModel>().weapons[0].projectile;
             DamageModel damage=proj.behaviors.First(a=>a.GetIl2CppType().Name=="DamageModel").Cast<DamageModel>();
             damage.damage*=2;
@@ -206,17 +231,24 @@ namespace Tempest{
             PlaySound("Tempest-Birth");
         }
         public override void Upgrade(int tier,Tower tower){
-            tower.Node.graphic.gameObject.GetComponent<SC2Sound>().PlayUpgradeSound();
+			TempestCom com=tower.Node.graphic.gameObject.GetComponent<TempestCom>();
+			if(tier==4){
+				com.activeObj.SetActive(false);
+				com.activeObj=com.upgradeTempest;
+				com.activeObj.SetActive(true);
+			}
+            com.PlayUpgradeSound();
         }
         public override void Select(Tower tower){
-            tower.Node.graphic.gameObject.GetComponent<SC2Sound>().PlaySelectSound();
+            tower.Node.graphic.gameObject.GetComponent<TempestCom>().PlaySelectSound();
         }
         public override void Attack(Weapon weapon){
-            PlayAnimation(weapon.attack.tower.Node.graphic,"Tempest-Attack");
+            PlayAnimation(weapon.attack.tower.Node.graphic.GetComponent<TempestCom>().activeObj.GetComponent<Animator>(),"Tempest-Attack");
         }
-        public override void Ability(string ability,Tower tower){
+        public override bool Ability(string ability,Tower tower){
             PlaySound("Tempest-Disintegration");
-            PlayAnimation(tower.Node.graphic,"Tempest-Attack");
+            PlayAnimation(tower.Node.graphic.GetComponent<TempestCom>().activeObj.GetComponent<Animator>(),"Tempest-Attack");
+			return true;
         }
     }
 }

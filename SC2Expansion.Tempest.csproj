@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <DefaultItemExcludes>$(DefaultItemExcludes);tempestproject;tempestproject\**\*</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
@@ -32,6 +32,9 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>/home/silentstorm/.steam/steam/steamapps/common/BloonsTD6/MelonLoader/Il2CppAssemblies/UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+	<Reference Include="UnityEngine.AnimationModule">
+      <HintPath>/home/silentstorm/.steam/steam/steamapps/common/BloonsTD6/MelonLoader/Il2CppAssemblies/UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <EmbeddedResource Include="Bundles/tempest.bundle" Link="tempest.bundle"/>
     <EmbeddedResource Include="Bundles/tempestclips.bundle" Link="tempestclips.bundle"/>
