@@ -40,7 +40,6 @@ namespace Tempest{
     }
     public class Tempest:SC2Tower{
         public override string Name=>"Tempest";
-        public override string Description=>"Protoss aerial seige craft, very high damage and range with slow fire rate";
         public override Faction TowerFaction=>Faction.Protoss;
         public override UpgradeModel[]GenerateUpgradeModels(){
             return new UpgradeModel[]{
@@ -90,6 +89,7 @@ namespace Tempest{
             details.pathTwoMax=0;
             details.pathThreeMax=0;
             details.popsRequired=0;
+			LocManager.textTable.Add("Tempest Description","Protoss aerial seige craft, very high damage and range with slow fire rate");
             LocManager.textTable.Add("Disruption Blast Description","Attacks slow targets for a short time");
             LocManager.textTable.Add("Tectonic Destablizers Description","Deals triple damage against Moab class Bloons");
             LocManager.textTable.Add("Disintegration Description","Ability: Fires a massive amount of energy at a target dealing huge damage to it over a short period");
