@@ -6,9 +6,12 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tempestproject;tempestproject\**\*</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SC2ExpansionLoader">
-      <HintPath>\Program Files (x86)\Steam\steamapps\common\BloonsTD6\Mods\SC2ExpansionLoader.dll</HintPath>
-    </Reference>
+    <None Remove="Bundles\tempest.bundle" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bundles\tempest.bundle" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>\Program Files (x86)\Steam\steamapps\common/BloonsTD6/MelonLoader/Il2CppAssemblies/Assembly-CSharp.dll</HintPath>
     </Reference>
@@ -27,8 +30,17 @@
     <Reference Include="NinjaKiwi.Common">
       <HintPath>\Program Files (x86)\Steam\steamapps\common/BloonsTD6/MelonLoader/Il2CppAssemblies/Il2CppNinjaKiwi.Common.dll</HintPath>
     </Reference>
+    <Reference Include="SC2ExpansionLoader">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\Mods\SC2ExpansionLoader.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>\Program Files (x86)\Steam\steamapps\common/BloonsTD6/MelonLoader/Il2CppAssemblies/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\MelonLoader\Il2CppAssemblies\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\MelonLoader\Il2CppAssemblies\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>\Program Files (x86)\Steam\steamapps\common/BloonsTD6/MelonLoader/Il2CppAssemblies/UnityEngine.CoreModule.dll</HintPath>
@@ -36,8 +48,6 @@
 	<Reference Include="UnityEngine.AnimationModule">
       <HintPath>\Program Files (x86)\Steam\steamapps\common/BloonsTD6/MelonLoader/Il2CppAssemblies/UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
-    <EmbeddedResource Include="Bundles/tempest.bundle" />
-    <EmbeddedResource Include="Bundles/tempestclips.bundle" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy $(TargetPath) &quot;\Program Files (x86)\Steam\steamapps\common\BloonsTD6\Mods&quot;" />
