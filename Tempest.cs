@@ -92,8 +92,7 @@ namespace Tempest{
             tempest.instaIcon=new(){guidRef="Ui["+Name+"-Icon]"};
             tempest.portrait=new(){guidRef="Ui["+Name+"-Portrait]"};
             List<Model>tempestBehav=tempest.behaviors.ToList();
-            tempestBehav.Add(gameModel.GetTowerFromId("Quincy").behaviors.
-                GetModel<CreateSoundOnSelectedModel>().Clone<CreateSoundOnSelectedModel>());
+            tempestBehav.Add(SelectedSoundModel);
             DisplayModel display=tempestBehav.GetModel<DisplayModel>();
             display.positionOffset=new(0,0,190);
             display.display=tempest.display;
@@ -115,7 +114,7 @@ namespace Tempest{
             travelModel.speed*=2.5f;
             travelModel.lifespan=5;
             tempest.behaviors=tempestBehav.ToArray();
-            SetSounds(tempest,true,true,true);
+            SetSounds(tempest,true,true,true,false);
             return tempest;
         }
         public TowerModel DisruptionBlast(){
@@ -153,7 +152,7 @@ namespace Tempest{
             tempest.tiers=new int[]{3,0,0};
             tempest.appliedUpgrades=new(new[]{"Disruption Blast","Tectonic Destablizers","Disintegration"});
             tempest.upgrades=new UpgradePathModel[]{new("Antimatter Infusion",Name+"-400")};
-            AbilityModel disintegration=BlankAbilityModel.Clone<AbilityModel>();
+            AbilityModel disintegration=BlankAbilityModel;
             AttackModel disintegrationAttack=tempest.behaviors.GetModel<AttackModel>().Clone<AttackModel>();
             disintegrationAttack.weapons[0].projectile=gameModel.GetTowerFromId("DartlingGunner-200").behaviors.
                 GetModel<AttackModel>().weapons[0].projectile.Clone<ProjectileModel>();
