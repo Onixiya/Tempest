@@ -114,7 +114,7 @@ namespace Tempest{
             travelModel.speed*=2.5f;
             travelModel.lifespan=5;
             tempest.behaviors=tempestBehav.ToArray();
-            SetSounds(tempest,true,true,true,false);
+            SetSounds(tempest,Identifier,true,true,true,false);
             return tempest;
         }
         public TowerModel DisruptionBlast(){
@@ -169,9 +169,7 @@ namespace Tempest{
             DOT.displayLifetime=0;
             disintegrationAttack.weapons[0].projectile.display=new(){guidRef=Name+"-DisintegrationPrefab"};
             List<Model>disintBehaviors=disintegration.behaviors.ToList();
-            disintBehaviors.Add(new ActivateAttackModel(null,69,false,null,false,false,false,false,false){name="ActivateAttackModel",
-                lifespan=2,processOnActivate=true,attacks=new(new[]{disintegrationAttack}),cancelIfNoTargets=true,turnOffExisting=true,
-                endOnDefeatScreen=false,isOneShot=true});
+            disintBehaviors.Add(new ActivateAttackModel("ActivateAttackModel",2,true,new(new[]{disintegrationAttack}),true,true,false,false,true,false));
             disintegration.behaviors=disintBehaviors.ToArray();
             disintegration.name="Disintegration";
             disintegration.displayName=disintegration.name;
