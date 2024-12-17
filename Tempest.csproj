@@ -30,8 +30,8 @@
     <Reference Include="NinjaKiwi.Common">
       <HintPath>\Program Files (x86)\Steam\steamapps\common/BloonsTD6/MelonLoader/Il2CppAssemblies/Il2CppNinjaKiwi.Common.dll</HintPath>
     </Reference>
-    <Reference Include="SC2ExpansionLoader">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\Mods\SC2ExpansionLoader.dll</HintPath>
+    <Reference Include="SC2Expansion">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\Mods\SC2Expansion.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>\Program Files (x86)\Steam\steamapps\common/BloonsTD6/MelonLoader/Il2CppAssemblies/UnityEngine.dll</HintPath>

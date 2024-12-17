@@ -25,21 +25,9 @@ using Il2CppAssets.Scripts.Models.Towers.Behaviors;
 using Il2CppAssets.Scripts.Models.Audio;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 [assembly:MelonGame("Ninja Kiwi","BloonsTD6")]
-[assembly:MelonInfo(typeof(Tempest.ModMain),Tempest.ModHelperData.Name,Tempest.ModHelperData.Version,"Silentstorm")]
-[assembly:MelonOptionalDependencies("SC2ExpansionLoader")]
+[assembly:MelonInfo(typeof(Tempest.SC2ModMain),Tempest.ModHelperData.Name,Tempest.ModHelperData.Version,"Silentstorm")]
 namespace Tempest{
-    public class ModMain:MelonMod{
-        public static string LoaderPath=MelonEnvironment.ModsDirectory+"/SC2ExpansionLoader.dll";
-        public override void OnEarlyInitializeMelon(){
-            if(!File.Exists(LoaderPath)){
-                /*var httpClient=new HttpClient();
-                var stream=httpClient.GetStreamAsync("https://github.com/Onixiya/SC2Expansion/releases/latest/download/SC2ExpansionLoader.dll");
-                var fileStream=new FileStream(LoaderPath,FileMode.CreateNew);
-                stream.Result.CopyToAsync(fileStream);
-                LoggerInstance.Msg("Restarting game so MelonLoader correctly loads all mods");
-                Application.Quit();*/
-            }
-        }
+    public class SC2ModMain:MelonMod{
     }
     public class Tempest:SC2Tower{
         public override string Name=>"Tempest";
@@ -114,7 +102,7 @@ namespace Tempest{
             travelModel.speed*=2.5f;
             travelModel.lifespan=5;
             tempest.behaviors=tempestBehav.ToArray();
-            SetSounds(tempest,Identifier,true,true,true,false);
+            SetSounds(tempest,Name,true,true,true,false);
             return tempest;
         }
         public TowerModel DisruptionBlast(){
@@ -189,12 +177,15 @@ namespace Tempest{
             tempest.appliedUpgrades=new(new[]{"Disruption Blast","Tectonic Destablizers","Disintegration","Antimatter Infusion"});
             tempest.upgrades=new(0);
             tempest.portrait=new(){guidRef="Ui["+Name+"-UpgradedPortrait]"};
-            ProjectileModel proj=tempest.behaviors.GetModel<AttackModel>().weapons[0].projectile;
-            DamageModel damage=proj.behaviors.GetModel<DamageModel>();
-            damage.damage*=2;
-            damage.immuneBloonProperties=0;
-            proj.behaviors.GetModel<SlowMaimMoabModel>().badDuration=3;
-            ProjectileModel disintProj=tempest.behaviors.GetModel<AbilityModel>().behaviors.GetModel<ActivateAttackModel>().attacks[0].weapons[0].projectile;
+            tempest.display=new(Name+"-UpgradedPrefab");
+            Il2CppReferenceArray<Model>tempestBehav=tempest.behaviors;
+            tempestBehav.GetModel<DisplayModel>().display=tempest.display;
+            ProjectileModel tempestProj=tempestBehav.GetModel<AttackModel>().weapons[0].projectile;
+            DamageModel tempestDamage=tempestProj.behaviors.GetModel<DamageModel>();
+            tempestDamage.damage*=2;
+            tempestDamage.immuneBloonProperties=0;
+            tempestProj.behaviors.GetModel<SlowMaimMoabModel>().badDuration=3;
+            ProjectileModel disintProj=tempestBehav.GetModel<AbilityModel>().behaviors.GetModel<ActivateAttackModel>().attacks[0].weapons[0].projectile;
             disintProj.behaviors.GetModel<DamageModel>().immuneBloonProperties=0;
             disintProj.behaviors.GetModel<AddBehaviorToBloonModel>().
                 behaviors.First(a=>a.GetIl2CppType()==Il2CppType.Of<DamageOverTimeModel>()).Cast<DamageOverTimeModel>().immuneBloonProperties=0;
