@@ -102,7 +102,7 @@ namespace Tempest{
             travelModel.speed*=2.5f;
             travelModel.lifespan=5;
             tempest.behaviors=tempestBehav.ToArray();
-            SetSounds(tempest,Name,true,true,true,false);
+            SetSounds(tempest,Name+"-",true,true,true,false);
             return tempest;
         }
         public TowerModel DisruptionBlast(){
