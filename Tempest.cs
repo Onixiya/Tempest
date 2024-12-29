@@ -67,6 +67,7 @@ namespace Tempest{
         }
         public TowerModel Base(){
             TowerModel tempest=gameModel.GetTowerFromId("DartMonkey").Clone().Cast<TowerModel>();
+            tempest.mods=new(0);
             tempest.name=Name;
             tempest.baseId=tempest.name;
             tempest.towerSet=TowerSet.Magic;
