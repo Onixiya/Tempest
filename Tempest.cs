@@ -10,8 +10,8 @@ using Il2CppInterop.Runtime;
 using Il2CppAssets.Scripts.Models.Towers.Weapons;
 using Il2CppAssets.Scripts.Models;
 using MelonLoader;
-using SC2ExpansionLoader;
-using static SC2ExpansionLoader.ModMain;
+using SC2Expansion;
+using static SC2Expansion.ModMain;
 using Il2CppAssets.Scripts.Models.Towers.Upgrades;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Models.Towers;
@@ -81,7 +81,7 @@ namespace Tempest{
             tempest.instaIcon=new(){guidRef="Ui["+Name+"-Icon]"};
             tempest.portrait=new(){guidRef="Ui["+Name+"-Portrait]"};
             List<Model>tempestBehav=tempest.behaviors.ToList();
-            tempestBehav.Add(SelectedSoundModel);
+            tempestBehav.Add(SelectedSoundModel.Clone());
             DisplayModel display=tempestBehav.GetModel<DisplayModel>();
             display.positionOffset=new(0,0,190);
             display.display=tempest.display;
@@ -141,8 +141,8 @@ namespace Tempest{
             tempest.tiers=new int[]{3,0,0};
             tempest.appliedUpgrades=new(new[]{"Disruption Blast","Tectonic Destablizers","Disintegration"});
             tempest.upgrades=new UpgradePathModel[]{new("Antimatter Infusion",Name+"-400")};
-            AbilityModel disintegration=BlankAbilityModel;
-            AttackModel disintegrationAttack=tempest.behaviors.GetModel<AttackModel>().Clone<AttackModel>();
+            AbilityModel disintegration=BlankAbilityModel.Clone<AbilityModel>();
+            AttackModel disintegrationAttack=tempest.behaviors.GetModelClone<AttackModel>();
             disintegrationAttack.weapons[0].projectile=gameModel.GetTowerFromId("DartlingGunner-200").behaviors.
                 GetModel<AttackModel>().weapons[0].projectile.Clone<ProjectileModel>();
             AddBehaviorToBloonModel AddDOT=disintegrationAttack.weapons[0].projectile.behaviors.GetModel<AddBehaviorToBloonModel>();
